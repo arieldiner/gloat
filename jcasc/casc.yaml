@@ -1,0 +1,46 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:admin"
+        - "Overall/Read:authenticated"
+  remotingSecurity:
+    enabled: true
+security:
+  queueItemAuthenticator:
+    authenticators:
+    - global:
+        strategy: triggeringUsersAuthorizationStrategy
+  globaljobdslsecurityconfiguration:
+    useScriptSecurity: true
+unclassified:
+  location:
+    url: http://10.231.168.142:8080/
+jobs:
+  - script: >
+      pipelineJob('tsunami-scanner') {
+        parameters {
+                stringParam("IP_ADDRESS", "10.10.10.10", "Ip address to scan")
+        }
+        definition {
+          cpsScm {
+              scm {
+                 git {
+                    remote{
+                         github("arieldiner/gloat", "https")
+                    }
+                    branch("*/main")
+                 }			
+              }
+          scriptPath("Jenkinsfile")		
+          }
+        }
+      }
+
+
