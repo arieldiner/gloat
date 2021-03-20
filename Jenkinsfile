@@ -2,10 +2,10 @@
                 agent any
                 stages {
                   stage ('Build tsunami') {
-		      agent {docker { image 'docker:dind' }}
+		      agent {docker { image 'test:latest' }}
 			    steps {
 			      git branch: "master", url: 'https://github.com/google/tsunami-security-scanner.git'
-			      sh "docker build -t tsunami ."
+			      sh "python --version"
 			    }
                   }
 			  stage ('Run tsunami'){
