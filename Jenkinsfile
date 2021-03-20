@@ -43,7 +43,7 @@ def newips = [:]
 				            lines.each {
 				                line ->
 				                newips[line] = {
-				                    sh "docker run  --network='host' -v \"\$WORKSPACE/logs\":/usr/tsunami/logs tsunami --ip-v4-target=${line} --scan-results-local-output-format=JSON --scan-results-local-output-filename=$WORKSPACE/logs/${line}.json"
+				                    sh "docker run  --network='host' -v \"\$WORKSPACE/logs\":/usr/tsunami/logs tsunami --ip-v4-target=${line} --scan-results-local-output-format=JSON --scan-results-local-output-filename=logs/${line}.json"
 				                    // def isDetected = (sh(returnStdout:true, script: "cat $WORKSPACE/logs/${line}.json | jq '.fullDetectionReports | length'")).trim()
 				                    // if(isDetected > 0){
 				                    //     echo "vulnerability detected"
