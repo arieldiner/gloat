@@ -4,7 +4,7 @@
                   stage ('Build tsunami') {
 			    steps {
 			      git branch: "master", url: 'https://github.com/google/tsunami-security-scanner.git'
-			      sh "sudo docker build -t tsunami ."
+			      sh "docker build -t tsunami ."
 			    }
                   }
 			  stage ('Run tsunami'){
