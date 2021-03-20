@@ -13,6 +13,7 @@
 				   //sh "sudo docker run --name unauthenticated-jupyter-notebook -p 8888:8888 -d jupyter/base-notebook start-notebook.sh --NotebookApp.token=''"
 				    //sh "docker run  --network='host' -v '\$WORKSPACE/logs':/usr/tsunami/logs tsunami"
 					//-v \$(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock
+					sh "ls"
 				}
 			  }
                 }
