@@ -1,19 +1,60 @@
+def singleIp = false
+def newips = [:]
+
               pipeline {
                 agent any
+                environment{
+                    IPADDRESS=""
+                    LIST=""
+                    
+                }
                 stages {
-                  stage ('Build tsunami') {
+                  stage ('Get Address List From File') {
 		  //    agent {docker { image 'test:latest' }}
 			    steps {
-			      git branch: "master", url: 'https://github.com/google/tsunami-security-scanner.git'
-			      sh "docker build -t tsunami ."
+			        script{
+			             def exists = fileExists "$WORKSPACE/ipaddresslist.txt"
+			            echo "${exists}"
+			            if("${IP_ADDRESS}" == "" ){
+			                if(!exists){
+			                    echo "file is not exist"
+			                    sh "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unauthenticated-jupyter-notebook-4 > \$WORKSPACE/ipaddresslist.txt"
+			                    sh "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unauthenticated-jupyter-notebook-6 >> \$WORKSPACE/ipaddresslist.txt"
+			                }
+    			        
+			            } else{
+			                echo "I'm going to run tsunami on ip address : ${IP_ADDRESS}"
+			                singleIp=true
+			            }
+
+			        }
+
 			    }
                   }
-			  stage ('Run tsunami'){
+			  stage ('parallel stage'){
 				steps{
-				   //sh "sudo docker run --name unauthenticated-jupyter-notebook -p 8888:8888 -d jupyter/base-notebook start-notebook.sh --NotebookApp.token=''"
-				    //sh "docker run  --network='host' -v '\$WORKSPACE/logs':/usr/tsunami/logs tsunami"
-					//-v \$(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock
-					sh "ls"
+				    script{
+				         if(singleIp){
+				             echo "I'm going to run tsunami on ip address : ${IP_ADDRESS}"
+				         }else{
+    			            def filePath = readFile "$WORKSPACE/ipaddresslist.txt"
+    			            def lines = filePath.readLines()
+    			            echo "${lines}"
+				            lines.each {
+				                line ->
+				                newips[line] = {
+				                    sh "docker run  --network='host' -v \"\$WORKSPACE/logs\":/usr/tsunami/logs tsunami --ip-v4-target=${line} --scan-results-local-output-format=JSON --scan-results-local-output-filename=logs/${line}.json"
+				                    def isDetected = (sh(returnStdout:true, script: "cat $WORKSPACE/logs/${line}.json | jq '.fullDetectionReports | length'")).trim()
+				                    if(isDetected > 0){
+				                        echo "vulnerability detected"
+				                        echo "reporting to "
+				                    }
+				                }
+				            }
+				            parallel newips
+				         }
+				    }
+
 				}
 			  }
                 }
