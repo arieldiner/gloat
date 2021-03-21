@@ -22,6 +22,10 @@ security:
 unclassified:
   location:
     url: http://localhost:8080/
+  mailer:
+    smtpHost: "localhost"
+    smtpPort: "1025"
+
 jobs:
   - script: >
       pipelineJob('tsunami-scanner') {
