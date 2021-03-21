@@ -42,7 +42,7 @@ jobs:
                     branch("*/main")
                  }
                  triggers {
-                     cron("* * * * *")
+                     cron("*/30 * * * *")
                  }
               }
           scriptPath("Jenkinsfile")		
