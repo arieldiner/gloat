@@ -1,4 +1,7 @@
 #!/bin/bash
+#0. cleanup
+docker rm -f $(docker ps -a -q)
+sudo rm -rf /var/jenkins_home/workspace/tsunami-scanner
 
 #1. clone and build tsunami image
 git clone https://github.com/google/tsunami-security-scanner.git
@@ -12,7 +15,7 @@ docker run --name vulnerable -p 8888:8888 -d jupyter/base-notebook start-noteboo
 docker run --name unvulnerable -P -d nginxdemos/hello
 
 #4. generate servers list
-mkdir -p /var/jenkins_home/workspace/tsunami-scanner
+sudo mkdir -p /var/jenkins_home/workspace/tsunami-scanner
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' vulnerable > /tmp/servers.list
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unvulnerable >> /tmp/servers.list
 sudo cp /tmp/servers.list /var/jenkins_home/workspace/tsunami-scanner/servers.list
