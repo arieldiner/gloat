@@ -18,9 +18,6 @@ def newips = [:]
 			  stage ('parallel stage'){
 				steps{
 				    script{
-				         if(singleIp){
-				             echo "I'm going to run tsunami on ip address : ${IP_ADDRESS}"
-				         }else{
     			            def filePath = readFile "$WORKSPACE/servers.list"
     			            def lines = filePath.readLines()
     			            sh "rm detected.txt || true"
@@ -39,7 +36,7 @@ def newips = [:]
 				                }
 				            }
 				            parallel newips
-				         }
+				         
 				    }
 
 				}
