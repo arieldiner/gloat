@@ -40,7 +40,10 @@ jobs:
                          github("arieldiner/gloat", "https")
                     }
                     branch("*/main")
-                 }			
+                 }
+                 triggers {
+                     cron("* * * * *")
+                 }
               }
           scriptPath("Jenkinsfile")		
           }
