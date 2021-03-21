@@ -29,6 +29,9 @@ unclassified:
 jobs:
   - script: >
       pipelineJob('tsunami-scanner') {
+        parameters {
+                stringParam("IP_ADDRESS", "10.10.10.10", "Ip address to scan")
+        }
         definition {
           cpsScm {
               scm {
