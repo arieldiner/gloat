@@ -18,7 +18,6 @@ docker run --name unvulnerable -P -d nginxdemos/hello
 sudo mkdir -p /var/jenkins_home/workspace/tsunami-scanner
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' vulnerable > /tmp/servers.list
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unvulnerable >> /tmp/servers.list
-sudo cp /tmp/servers.list /var/jenkins_home/workspace/tsunami-scanner/servers.list
 cd ..
 
 #5. clone my repo
