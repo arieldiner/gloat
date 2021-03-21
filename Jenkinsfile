@@ -13,22 +13,12 @@ def newips = [:]
 		  //    agent {docker { image 'test:latest' }}
 			    steps {
 			        script{
-			             def exists = fileExists "$WORKSPACE/ipaddresslist.txt"
+			             def exists = fileExists "$WORKSPACE/servers.list"
 			            echo "${exists}"
-			            if("${IP_ADDRESS}" == "" ){
-			                if(!exists){
-			                    echo "file is not exist"
-			                    sh "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unauthenticated-jupyter-notebook-4 > \$WORKSPACE/ipaddresslist.txt"
-			                    sh "docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unauthenticated-jupyter-notebook-6 >> \$WORKSPACE/ipaddresslist.txt"
-			                }
-    			        
-			            } else{
-			                echo "I'm going to run tsunami on ip address : ${IP_ADDRESS}"
-			                singleIp=true
-			            }
-
+			            if(!exists){
+					    error("servers.list does not exist at $WORKSPACE/servers.list")
+			            } 
 			        }
-
 			    }
                   }
 			  stage ('parallel stage'){
@@ -52,13 +42,6 @@ def newips = [:]
 				                        archiveArtifacts artifacts: "logs/${line}.json", fingerprint: true
 				                        sh "echo detected > $WORKSPACE/detected.txt"
 				                    }
-				                    
-				                    
-				                    // def isDetected = (sh(returnStdout:true, script: "cat $WORKSPACE/logs/${line}.json | jq '.fullDetectionReports | length'")).trim()
-				                    // if(isDetected > 0){
-				                    //     echo "vulnerability detected"
-				                    //     echo "reporting to "
-				                    // }
 				                }
 				            }
 				            parallel newips
