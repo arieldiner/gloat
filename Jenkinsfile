@@ -3,14 +3,8 @@ def newips = [:]
 
               pipeline {
                 agent any
-                environment{
-                    IPADDRESS=""
-                    LIST=""
-                    
-                }
                 stages {
                   stage ('Get Address List From File') {
-		  //    agent {docker { image 'test:latest' }}
 			    steps {
 			        script{
 			             def exists = fileExists "$WORKSPACE/servers.list"
