@@ -4,6 +4,9 @@ def newips = [:]
 
               pipeline {
                 agent any
+		    triggers {
+        		cron('* * * * *')
+    		}
                 stages {
                   stage ('Get Ip Addresses') {
 			    steps {
