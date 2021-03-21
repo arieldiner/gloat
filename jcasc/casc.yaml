@@ -21,13 +21,10 @@ security:
     useScriptSecurity: true
 unclassified:
   location:
-    url: http://10.231.168.142:8080/
+    url: http://localhost:8080/
 jobs:
   - script: >
       pipelineJob('tsunami-scanner') {
-        parameters {
-                stringParam("IP_ADDRESS", "10.10.10.10", "Ip address to scan")
-        }
         definition {
           cpsScm {
               scm {
