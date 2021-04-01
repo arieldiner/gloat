@@ -2,7 +2,7 @@
 #0. cleanup
 docker rm -f $(docker ps -a -q)
 sudo rm -rf /var/jenkins_home/workspace/tsunami-scanner
-sudo rm -rf /var/jenkins_home/workspace/gloat
+sudo rm -rf /var/jenkins_home/workspace/jcasc
 #1. clone and build tsunami image
 git clone https://github.com/google/tsunami-security-scanner.git
 cd tsunami-security-scanner
@@ -21,8 +21,8 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' unvu
 cd ..
 
 #5. clone my repo
-git clone https://github.com/arieldiner/gloat.git
-cd gloat/jcasc
+git clone https://github.com/arieldiner/jenkins_as_code.git
+cd jenkins_as_code/jcasc
 
 #6. replace localhost with IP
 sed -i "s/localhost/$(hostname -I | awk '{print $1}')/g" casc.yaml
