@@ -1,1 +1,1 @@
-Ariel Diner - Gloat exercise
+Jenkins as code example
