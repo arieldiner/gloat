@@ -45,7 +45,7 @@ def newips = [:]
                     success{
                         script{
                             if (fileExists('detected.txt')) {
-                                mail bcc: '', body: "Vulnerability detected see report at $BUILD_URL", cc: '', from: 'arieldiner@gloat.com', replyTo: '', subject: 'Vulnerability detected', to: 'ronen@gloat.com'
+                                mail bcc: '', body: "Vulnerability detected see report at $BUILD_URL", cc: '', from: 'arieldiner@test.com', replyTo: '', subject: 'Vulnerability detected', to: 'ariel@test.com'
                             } else {
                                echo 'VULNERABILITY NOT DETECTED'
                             }
