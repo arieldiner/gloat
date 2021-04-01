@@ -37,7 +37,7 @@ jobs:
               scm {
                  git {
                     remote{
-                         github("arieldiner/gloat", "https")
+                         github("arieldiner/jenkins_as_code", "https")
                     }
                     branch("*/main")
                  }
